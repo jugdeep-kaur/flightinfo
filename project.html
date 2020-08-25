@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>Final Project</title>
+<link rel = "stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"></link>
+</head>
+<body class="bg-warning">
+
+<!--===============================================================================================================================-->
+<!-- Labels and Text box for Entering the information of flight-->
+<form class = "bg-success">
+	<center><h2><u>Enter New Information of flight</u></h2><br>
+	
+	<label for="Flight_Number">Flight Number:</label>
+    &nbsp<input type="text" id="Flight_Number" name="Flight_Number" required min-length="1" placeholder="Enter Flight Number"><br>
+	
+	<label for="Duration">Flight Duration:</label>
+    <input type="text" id="Duration" name="Duration"  required min-length="1" placeholder="Enter Flight Duration"><br>
+	
+	<label for="Source">Source:</label>
+    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="Source" name="Source" required min-length="1" placeholder="Enter Flight Source"><br>
+	
+	<label for="destination">Destination:</label>
+    &nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="destination" name="destination"  required min-length="1" placeholder="Enter Flight Destination"><br>
+	
+	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<label for="Depart_Time">Departure Time:</label>
+    <input type="datetime-local" id="Depart_Time" name="Depart_Time"  required min-length="1" placeholder="Enter Departure Time"><br><br>
+	
+	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" class="btn-warning">Submit</button></center><br>
+	
+</form><br>
+<!--===============================================================================================================================-->
+<!-- link provide to button to get the information of all flights -->
+<center><a href="./flightData.html"><h5>Check Flight Details</h5></a></center><br><br>
+
+<script>
+        $("button").click(()=>{
+            event.preventDefault();
+            var Flight_Number = $("#Flight_Number").val();
+            var Duration = $("#Duration").val();
+            var Source = $("#Source").val();
+            var destination = $("#destination").val();
+            var Depart_Time = $("#Depart_Time").val();
+			//console.log(Flight_Number);
+            $.post("http://localhost:8081/addFlights",{
+                Flight_Number: Flight_Number,
+                Duration: Duration,
+                Source: Source,
+                destination: destination,
+                Depart_Time: Depart_Time
+            },
+            function result(data){
+                alert(data);
+                //$("form").reset();
+            })
+        });
+        
+    </script>
+
+</body>
+
+
+</html>

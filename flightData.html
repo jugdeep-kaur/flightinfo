@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<title>Final Project</title>
+		<link rel = "stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"></link>	
+</head>
+
+<body class="bg-warning">
+
+  <h5><b><a href="./project.html">Add Flight Details</a></b></h5>
+  
+  <div class="div-container">
+		<form class = "bg-success"><br>
+
+			<label for ="destination">Enter Flight Destination</label>
+			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="destination" name="destination" placeholder="Enter Here" required=true>
+			<button id = "destination" class= "btn-success">Run</button></a><br><br>
+
+			<label for ="Depart_Time">Enter Flight Date</label>
+			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="date" id="Depart_Time" name="Depart_Time" placeholder="Enter Specific Date" required=true>
+			<button id = "Depart_Time" class= "btn-success" >Run</button></a><br><br>
+			
+			<label for ="flight_day">Number of Flights in specific Day</label>
+			<input type="date" id="flight_day" name="flight_day" placeholder="Enter Flight Day" required=true>
+			<button id = "flight_day" class= "btn-success">Run</button></a>
+			
+		</form>
+  </div>		
+	
+<script>
+        $("button").click(()=>{
+            $("table").remove();
+            $("p").remove();
+            event.preventDefault();
+            var btndestination = event.target.id;
+            switch (btndestination) {
+                case 'destination':
+                    var destination = $("#destination").val();
+                    getData(destination,btndestination);
+                    break;
+                case 'Depart_Time':
+                    var destination = $("#Depart_Time").val();
+                    getData(destination,btndestination);
+                    break;
+                case 'flight_day':
+                    var destination = $("#flight_day").val();
+                    if(destination != "")
+                    $.get("http://localhost:8081/getFlightData",{destination, btndestination:"Depart_Time"},
+                        function result(data,status){
+                            var numberFlight = data.length;
+                            var txt = $("<h6></h6>").text("There are  "+numberFlight+" flights on Entered Day");
+                            if(data != null)
+                            $("form").append(txt);
+                        }
+                    );
+                    else{
+                        alert("Field is required");
+                    }
+                    break;
+            }
+        });
+
+        function getData(destination,btndestination){
+            if(destination != "")
+                    $.get("http://localhost:8081/getFlightData",{destination,btndestination},
+                        function result(data,status){
+                            var table = $('<table></table>');
+                            var row = $('<th>Flight Number</th><th>&nbspFlight Duration</th><th>&nbspFlight Source</th><th>&nbspFlight Destination</th><th>&nbspFlight Date</th>')
+                            table.append(row);
+                            for (var i = 0; i < data.length; i++) {
+                                var row = $('<tr></tr>');
+                                var obj = data[i];
+                                for(x in obj){
+                                    var rowData = $('<td></td>').text(obj[x]);
+                                    row.append(rowData);
+                                }    
+                                table.append(row);
+                            }
+                            if(data != null)
+                            $(".div-container").append(table);
+                        }
+                    );
+                    else{
+                        alert("Field is required");
+                    }
+        }
+        
+</script>
+		
+</body>
+</html>
